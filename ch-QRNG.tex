@@ -1,0 +1,98 @@
+\chapter{Quantum Random Number Generators}
+I generatori quantici di numeri casuali nascono dalla necessità di avere degli strumenti per ottenere numeri realmente random, dove la fonte di casualità non dipenda da una mancanza di informazioni sul sistema o fenomeno sfruttato ma sia genuina. Come sarà descritto in questo capitolo, con i QRNG risulta inoltre possibile verificare la fonte di casualità grazie alle leggi del mondo quantico.
+
+I QRNG si possono suddividere in varie categorie in base alla fonte di casualità sfruttata e alla modalità di misurazione utilizzata. In primo luogo, però, i generatori quantici di numeri casuali si possono dividere in Trusted device QRNG, self-testing QRNG e semi self-testing QRNG, descritti di seguito. Per comprendere al meglio le prossime sezioni è opportuno fare una premessa: un QRNG è costituito da due componenti principali, una fonte di casualità e uno strumento per estrarre quest'ultima e trasformarla in un valore casuale.
+
+\section{Trusted device QRNG}
+I trusted device QRNG assumono che sia lo strumento utilizzato per l'estrazione dei valori, sia la fonte di casualità siano ben definiti e che rispettino alla perfezione il modello matematico a cui si riferiscono. La loro semplicità di funzionamento e di implementazione li rende adatti ad applicazioni pratiche, ma se una di queste due assunzioni non è rispettata la qualità dei numeri casuali non è verificata. Questa risulta essere una forte limitazione, soprattutto considerando che controllare sistemi quantici è un'operazione molto complessa. 
+
+Di seguito verranno elencate diverse tipologie di trusted device QRNG, discutendone il funzionamento e analizzandone le proprietà.
+
+\subsection{Decadimento radioattivo} \label{sssec:decadimento_radioattivo}
+Il decadimento radioattivo di particelle è stato uno dei primi fenomeni quantici sfruttati per la generazione di numeri casuali. La radioattività può essere spiegata solamente utilizzando il principio di indeterminazione della meccanica quantistica. I generatori sviluppati utilizzavano un tubo Geiger–Müller (GM) particolarmente sensibile e delle fonti ben definite di radiazioni $\alpha$, $\beta$ e $\gamma$. Il tubo GM produce una pulsazione per ogni ionizzazione rilevata. La probabilità di decadimento in un intervallo di tempo $dt$ è data da:
+\\
+\[ P(t)dt = \lambda_me^{\lambda_mt}dt \]
+\\
+dove $\lambda_m$ è la costante di decadimento relativa alla fonte radioattiva considerata. Le pulsazioni formano una distrubuzione di Poisson e la frequenza di decadimento dipende da diversi fattori. I principali metodi per trasformare la rilevazione delle ionizzazioni in numeri casuali sono due: il metodo dell'orologio veloce e quello dell'orologio lento. La differenza tra i due è che, mentre nel primo la frequenza dell'orologio è maggiore di quella media di rilevazione, nel secondo avviene l'opposto. Di conseguenza, anche il funzionamento è differente. Nel metodo dell'orologio veloce ad essere convertito in numero binario è il numero di cicli dell'orologio tra una rilevazione e quella successiva, mentre in quello dell'orologio lento vengono contate le rilevazioni di ionizzazioni in un determinato lasso temporale. Per risolvere il problema della distribuzione di Poisson dei valori, proprietà che ovviamente non è desiderata in un generatore di numeri casuali, sono stati elaborati diversi metodi per renderla uniforme. Il più semplice consiste nel guardare la parità del valore generato per generare il valore realmente casuale (0 se il numero è pari, 1 se dispari). Nonostante siano state sviluppate diverse versioni di tali generatori, ognuno di essi è caratterizzato dalle medesime limitazioni. In primo luogo, controllare fenomeni di decadimento radioattivo comporta delle difficoltà in termini di sicurezza. Inoltre, eventi radioattivi possono influenzare il funzionamento degli strumenti utilizzati, andando ad intaccare la qualità dei valori generati e la frequenza di generazione degli stessi.
+
+\subsection{Rumore elettronico}
+Un'altra fonte di entropia individuata è il rumore presente in circuiti elettrici. Sono infatti stati sviluppati dei generatori che utilizzano componenti elettronici come resistenze e diodi come fonte di entropia. Il rumore viene tipicamente generato a causa della natura quantica delle cariche elettriche e il fenomeno quantico sfruttato è anche in questo caso il principio di indeterminazione. Il rumore rilevato viene successivamente amplificato e utilizzato per l'estrazione dei valori, per esempio confrontandolo con un valore soglia per generare bit casuali. Il rumore presente in questi sistemi si può tuttavia suddividere in due categorie: il rumore shot (shot noise), di natura quantica e il rumore termico, dovuto allo spostamento delle cariche elettriche a causa della temperatura ambiente. Idealmente si vorrebbe estrarre la casualità dallo shot noise in quanto fenomeno quantico, ma in pratica risulta difficile isolare quest'ultimo dal rumore termico. La difficoltà nel distinguere le due forme di rumore è il problema principale di questo tipo di generatori.
+
+\subsection{QRNG che utilizzano rilevatori di singoli fotoni} \label{QRNG_ottici}
+I QRNG spiegati in questa sezione e quelli illustrati nella successiva fanno parte della classe di generatori basata su fenomeni ottici, che sfruttano quindi la natura dei fotoni come fonte di casualità. I principali vantaggi di tali sistemi, rispetto a quelli finora analizzati, sono la facilità di implementazione e di funzionamento. Le fonti utilizzate sono LASER, LED e fonti di singolo fotone. La luce viene successivamente manipolata con elementi ottici e infine misurata. In questa sezione sono descritti i QRNG che utilizzano rilevatori di singoli fotoni, mentre nella successiva saranno analizzati i QRNG che sfruttano rilevatori macroscopici.
+\\
+\\
+\textit{\textbf{Qubit state}}\\
+I QRNG basati sul qubit state generano casualità misurando i qubits in superposition. Il principio di meccanica quantistica alla base di questo approccio è quindi il collasso del vettore di stato al momento dell'osservazione. In particolare, come descritto nel capitolo dei prerequisiti, lo stato quantico di un fotone può essere una combinazione lineare di più stati, ossia il fotone può trovarsi in superposition. Per esempio, se un fotone è fatto passare in un beam splitter (BS), esso esisterà nella superposition degli stati \textit{riflesso} ($|R\rangle$) e \textit{trasmesso} ($|T\rangle$). Qualsiasi sistema quantico può esistere in una superposition degli stati della base e risulta relativamente semplice sfruttare questa proprietà e quella del collasso all'osservazione per generare numeri casuali. In base binaria, dove gli stati $|0\rangle$ e $|1\rangle$ rappresentano rispettivamente l'assenza e la presenza del fotone, è possibile definire lo stato $|1\rangle_1|0\rangle_2$ che indica la misurazione del fotone nel primo stato della base e lo stato $|0\rangle_1|1\rangle_2$ che indica la misurazione del fotone nel secondo. La superposition di un fotone sarebbe a questo punto descritta da:
+\\
+\[\frac{|1\rangle_1|0\rangle_2+|0\rangle_1|1\rangle_2}{\sqrt{2}}\]
+\\
+Utilizzando dei rilevatori come mostrato in figura \ref{fig:beam_splitter_QRNG} è possibile generare un bit casuale ad ogni rilevazione, osservando uno dei due stati, ognuno con il 50\% di probabilità.
+\\
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{immagini/beam_splitter.png}
+    \caption{QRNG con beam splitter o polarized beam splitter}
+    \label{fig:beam_splitter_QRNG}
+\end{figure}
+\\
+Diverse implementazioni sono state sviluppate con la tecnica appena presentata, ma i risultati hanno mostrato come la velocità di generazione sia limitata a decine di Mbps \cite{jennewein_fast_2000}. Tale tipologia di generatori ha infatti un problema causato dai rilevatori utilizzati. Questi ultimi sono infatti caratterizzati da un tempo morto a seguito di ogni rilevazione durante il quale non possono rilevare altri fotoni. Questo può portare alla creazione di correlazione tra i bit generati ed aumentare il tempo richiesto per la generazione. Per aggirare queste limitazioni sono stati sviluppati dei generatori che utilizzano combinazioni di un maggior numero di stati, in modo che i fotoni possano seguire più percorsi. A tal punto, la superposition di un fotone sarebbe descritta come di seguito:
+\\
+\[\frac{|10...00\rangle+|01...00\rangle+...+|00...01\rangle}{\sqrt{n}}\]
+\\
+Una misurazione dello stato in un esperimento in cui il fotone può seguire $n$ percorsi risulterebbe in $log_2(n)$ bit casuali. Tuttavia, la creazione e il controllo di un sistema di questo tipo risultano essere molto più complicati rispetto ai dispositivi descritti precedentemente.
+\\
+\\
+\textit{\textbf{Temporal mode}}\\
+I QRNG temporali generano casualità dal tempo di arrivo dei fotoni. In questo senso, sono molto simili come funzionamento ai QRNG basati sul decadimento radioattivo descritti nella sezione \ref{sssec:decadimento_radioattivo}. A differenza di questi ultimi, tuttavia, hanno una maggiore frequenza di generazione, in quanto la produzione di fotoni è più veloce. Una tipologia standard di questi generatori utilizza una fonte di fotoni, dei ricettori e un timer. Viene misurato il tempo impiegato da un fotone per arrivare ($t1$) e il tempo impiegato da quello successivo ($t2$). Tali valori vengono infine confrontati e viene generato un 1 se $t2>t1$ e uno 0 se $t2<t1$. La difficoltà principale con questi generatori è la precisione di misurazione del tempo impiegato dai fotoni. Un'alternativa anche in questo caso è utilizzare il metodo dell'orologio lento descritto per il decadimento radioattivo. In ogni caso, questi generatori non sono afflitti dal problema del tempo morto dei ricettori e riescono a raggiungere velocità di generazione di circa 109 Mbps \cite{nie_practical_2014}.
+
+\subsection{QRNG che utilizzano misuratori macroscopici di fotoni}
+In questa tipologia di QRNG vengono misurate delle caratteristiche più classiche come l'intensità, l'ampiezza, la fase, ecc. Creare un modello per tali generatori risulta essere più complesso e deve essere prestata particolare attenzione per assicurarsi che la fonte di casualità utilizzata sia effettivamente quantica. I QRNG sviluppati con queste tecniche non sono tuttavia caratterizzati dal problema dei tempi morti dei SPD e riescono dunque a raggiungere velocità di generazione maggiori.
+\\
+\\
+\textbf{\textit{Vacuum noise}}\\
+Questi QRNG utilizzano come fonte di casualità le fluttuazioni di punto zero del campo elettromagnetico. Nell'ottica quantica, lo stato di vuoto è rappresentato da una distribuzione Gaussiana su due dimensioni centrata nell'origine e con incertezza pari a $1/4$. Per generare numeri casuali vengono misurate quindi le quadrature dell'ampiezza e della fase del campo elettromagnetico. Le misurazioni possono essere eseguite ripetutamente, generando numeri casuali. Nell'esperimento descritto in \cite{shen_practical_2010} viene utilizzata una rilevazione omodina dello shot noise dello stato di vuoto. In particolare, come mostrato in figura \ref{fig:vacuum}, dopo aver effettuato la prima misurazione dello shot noise il segnale viene manipolato per estrarre i bit casuali. 
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{immagini/vacuum.png}
+    \caption{QRNG basato sulla misurazione dello shot noise nello stato di vuoto utilizzando una rilevazione omodina}
+    \label{fig:vacuum}
+\end{figure}
+
+Questa tipologia di generatori è limitata in velocità dai rilevatori e, sebbene opportune misure siano state implementate per isolare lo shot noise, quest'ultimo non è l'unico rumore presente, fattore che potrebbe influenzare la casualità dei valori generati. Nonostante tali limitazioni esperimenti pratici di tali generatori sono riusciti a raggiungere frequenze di generazione pari a 2 Gbps \cite{symul_real_2011}.
+\\
+\\
+\textbf{\textit{Raman Scattering}}
+Lo scattering Raman o diffusione Raman consiste nella diffusione inelastica di fotoni e prevede sia uno scambio di energia che un cambio nella direzione della luce. Diversi QRNG sono stati sviluppati utilizzando questo fenomeno, estraendo entropia dall'ampiezza \cite{bustard_quantum_2013} o dalla fase \cite{bustard_quantum_2011} del campo in uscita.  
+
+\section{Self testing QRNG} \label{self_testing_qrng}
+I metodi finora descritti per generare numeri casuali con tecnologie quantiche si basano su una fiducia assoluta negli strumenti utilizzati. Tuttavia, questi ultimi potrebbero non funzionare correttamente, per difetti tecnici o per manipolazione di attaccanti esterni. Sarebbe quindi opportuno aggiungere qualche forma di controllo per verificare che le sequenze generate siano effettivamente casuali. Ovviamente, anche tali sistemi di controllo potrebbero essere influenzati da entità malevole, non risolvendo quindi il problema nella sua interezza. Tuttavia, supponendo che il generatore non sia stato manipolato, semplici sistemi di controllo permetterebbero di verificare il corretto funzionamento del QRNG. Per esempio, alcuni generatori implementano metodi per verificare la distribuzione del segnale estratto dalla fonte di casualità, utilizzando solo le sequenze che superano il controllo per la generazione di numeri casuali. La distribuzione ottenuta è confrontata con quella che si sa essere esatta in natura. Altri esperimenti hanno anche sfruttato il concetto di entanglement per verificare la non località del sistema osservando violazioni della Bell inequality. Tale approccio permette di scartare la possibilità che il funzionamento del sistema sia deterministico. Sistemi di controllo di questa natura sono tuttavia complicati da implementare ed utilizzare e riducono drasticamente la velocità di generazione dei valori casuali. 
+
+I self testing QRNG seguono principalmente due approcci: l'espansione della casualità e l'amplificazione della stessa.
+
+\subsection{Self-testing Randomness expansion}
+Al fine di ottenere un dispositivo completamente indipendente dalla realizzazione fisica dello stesso, esso deve includere qualche forma di non località. Infatti, se il dispositivo funzionasse seguendo un algoritmo deterministico, l'attaccante dovrebbe solamente utilizzare dei dati scelti con cura al fine di superare i test statistici utilizzati. Dall'altro lato, se il protocollo fosse locale, l'attaccante potrebbe fornire al sistema dei valori di output per ogni input, rendendo il sistema di controllo inutile. Di conseguenza, l'utilizzo di uno stato caratterizzato da non località è necessario per avviare la generazione di numeri casuali. Proprio per questo, tali protocolli sono visti come metodi di espansione di casualità piuttosto che di generazione della stessa.
+
+Un protocollo di espansione di casualità mira a prendere in ingresso una sequenza casuale e generare una sequenza casuale di maggiore lunghezza, facendo in modo che la sicurezza del protocollo non dipenda dalla conoscenza del funzionamento interno dei dispositivi utilizzati. A tal fine, il protocollo assicura che i dispositivi violino la Bell inequality e quantifica la casualità estraibile dal processo in base alla violazione rilevata.
+
+\subsection{Randomness amplification}
+Un dispositivo di espansione della casualità appena descritto necessita di un seme iniziale di casualità. Senza di esso, il protocollo diventerebbe deterministico e un attaccante potrebbe predire i valori generati. Un protocollo di amplificazione di casualità evita il vincolo di possedere un seme uniforme. Una sequenza di valori casuali $x_1,x_2,...,x_n$ è chiamata una fonte debole $\epsilon$ se
+\\
+\[\epsilon\leq p(x_j|x_1,x_2,...,x_{j-1},e)\leq1-\epsilon\]
+\\
+dove $p(x|y)$ è la probabilità condizionata e $e$ rappresenta una variabile classica che influenza potenzialmente $x_j$. Data una fonte debole è impossibile produrre casualità certificata attraverso un processo classico. In \cite{noauthor_free_nodate}, Colbeck e Renner hanno proposto un primo protocollo di amplificazione di casualità utilizzando tecnologie quantiche. Successivamente, tale risultato è stato migliorato mostrando come fosse possibile generare casualità perfetta da una sequenza casuale arbitrariamente debole \cite{gallego_full_2013}.
+
+Risulta quindi possibile utilizzare l'espansione di casualità per generare il seme perfettamente casuale necessario per avviare il processo di espansione di casualità. 
+
+\section{Semi self testing QRNG}
+Durante l'implementazione di un QRNG è possibile che alcuni componenti del sistema siano meglio definiti di altri. In pratica, sarebbe possibile fidarsi solo di parte del sistema, soprattutto in situazioni in cui ci si vuole difendere unicamente da malfunzionamenti del sistema e non da ipotetici attacchi provenienti dall'esterno. I semi self testing QRNG sono dei generatori con caratteristiche intermedie tra i trusted QRNG e i self testing QRNG. In particolare, rappresentano un compromesso tra la bassa affidabilità con alte prestazioni dei primi e l'alta affidabilità con prestazioni scarse dei secondi.
+
+\subsection{Source indipendent QRNG}
+Nei source independent QRNG, la casualità della fonte è considerata inaffidabile, mentre il funzionamento degli strumenti di misurazione è ritenuto corretto. 
+L'idea alla base di questi generatori, introdotta per la prima volta in \cite{vallone_quantum_2014}, è quella di effettuare le misurazioni della fonte di casualità utilizzando due differenti basi, tra loro mutualmente indipendenti. Sfruttando queste ultime e un seme casuale iniziale è possibile ottenere un limite inferiore alla casualità generata. Negli ultimi anni sono stati sviluppati diversi modelli di SI-QRNG \cite{marangon_source-device-independent_2017, avesani_source-device-independent_2018}, dimostrando come sia possibile raggiungere frequenze di generazione molto elevate fidandosi solo parzialmente del sistema utilizzato.
+
+
+\subsection{Measurement-device-independent QRNG}
+Alternativamente, esistono dei casi in cui la fonte di casualità è ben definita mentre gli strumenti di misurazione utilizzati sono considerati inaffidabili. 
+In tali sistemi vengono utilizzati stati casuali per verificare il corretto funzionamento degli strumenti di misurazione. Il vantaggio di tali QRNG è la loro tolleranza nei confronti di malfunzionamenti dei sistemi di misurazione e a potenziali attacchi agli stessi. Lo svantaggio rispetto ai sistemi descritti precedentemente è che qualsiasi errore nella fonte di casualità porterebbe al malfunzionamento dell'intero sistema. 

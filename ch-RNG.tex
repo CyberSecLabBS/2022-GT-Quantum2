@@ -1,0 +1,19 @@
+\chapter{Random Number Generators}
+In questo capitolo saranno descritti brevemente i generatori di numeri casuali attualmente utilizzati.
+La figura \ref{random_number_generators} riassume le varie tipologie di generatori di numeri casuali esistenti.
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=0.9\textwidth]{random_number_generators}
+    \caption{Tipologie di generatori di numeri casuali.}
+    \label{random_number_generators}
+\end{figure}
+
+\section{Pseudorandom-number generators}
+Un generatore di numeri pseudocasuali (PRNG) è un programma o una funzione che espande una breve sequenza di cifre (seme) in una sequenza di valori apparentemente casuali di lunghezza $N$, con $N$ scelto a piacere. L'espansione del seme viene tuttavia eseguita attraverso algoritmi deterministici e risulta quindi possibile predire i valori generati se si conosce il seme utilizzato. Per questo motivo, i PRNG sono perfetti per utilizzi dove la sicurezza non è importante, come simulazioni scientifiche o previsioni meteo, ma rappresentano fonti di vulnerabilità quando utilizzati in crittografia o altre applicazioni dove la segretezza dei valori generati è un fattore chiave. 
+
+Esistono diversi metodi per generare valori pseudocasuali e altrettanti test statistici per quantificarne la qualità. Nel tempo sono stati sviluppati anche i cosiddetti CSPRNG, ossia dei generatori pseudocasuali più robusti per utilizzi crittografici. Sebbene alcuni di questi generatori siano considerati sicuri (affermazione supportata da numerose evidenze sperimentali), tale sicurezza si basa sulla complessità computazionale, metrica che perde valore con l'avvento della tecnologia quantica.\\ Come già detto, il punto debole di questi generatori è il seme iniziale, che, se in possesso dell'attaccante, gli permetterebbe di predire tutti i valori generati. Per limitare questo problema, la sequenza che farà da seme è spesso ottenuta utilizzando un altro tipo di generatore di numeri casuali, un \textit{True Random Number Generator}, che utilizza l'entropia derivante da diversi componenti del computer per generare il valore casuale. 
+
+
+\section{True Random Number Generators}
+Questa categoria di generatori di numeri casuali si può suddividere, come mostrato in \ref{random_number_generators} in due macro aree: TRNG non fisici e TRNG fisici. I primi si basano su segnali provenienti da diversi componenti del computer o dall'interazione dell'utente con esso. Alcuni esempi di fonti di entropia in questo caso sono i movimenti del mouse, l'attività elettrica del disco fisso o valori istantanei dell'orologio di sistema. I TRNG fisici si possono invece ulteriormente suddividere in due gruppi: quelli classici e quelli quantici. I TRNG fisici classici utilizzano come fonte di entropia dei fenomeni fisici di complessa natura (non quantica), impossibili da modellare con gli strumenti e le conoscenze attualmente a disposizione. Alcuni esempi di tali fenomeni sono il lancio del dado, il rumore atmosferico, le radiazioni cosmiche o il rumore in circuiti elettrici. Questa classe di generatori presenta tuttavia un grande problema: la casualità dei valori generati si basa sulla mancanza di informazioni a disposizione, o, come i generatori pseudo-casuali, sulla limitata capacità computazionale a disposizione degli attaccanti. Quantificare la qualità di tali generatori è dunque complesso e nulla assicura che un più matura teoria fisica in futuro riesca a modellare perfettamente questi fenomeni. La peculiarità dell'ultima classe di generatori, quelli quantici, riguarda proprio questo aspetto: la casualità delle fonti quantiche è intrinseca e non si basa su assunzioni di complessità o mancanza di informazioni.

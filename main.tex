@@ -1,0 +1,40 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage[italian]{babel}
+\usepackage[T1]{fontenc}
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{color, soul}
+\graphicspath{ {./immagini/} }
+\usepackage[center]{caption}
+\usepackage[landscape]{geometry}
+\usepackage{tabularx}
+\setcounter{tocdepth}{3}
+\setcounter{secnumdepth}{3}
+
+\title{Quantum Random Number Generators}
+\author{Alessandro  Grassi, Danila Turra}
+\date{August 2022}
+
+\begin{document}
+
+\nocite{*}
+\include{frontespizio_magistrale}
+
+% \maketitle
+
+\tableofcontents
+\listoffigures
+
+\include{ch-introduzione}
+\include{ch-prerequisiti}
+\include{ch-RNG}
+\include{ch-QRNG}
+\include{ch-applicazioni}
+\include{ch-conclusione}
+
+\bibliographystyle{ieeetr}
+\bibliography{bibliografia}
+
+\end{document}
